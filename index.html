@@ -20,9 +20,13 @@
             font-family: 'Arial', sans-serif;
         }
         #game-container {
+            width: 1000px;
+            height: 700px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             border-radius: 10px;
             overflow: hidden;
+            position: relative;
+            background: #000;
         }
         #ui {
             position: absolute;
@@ -34,10 +38,32 @@
             font-size: 16px;
             color: white;
         }
+        #error-output {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            color: #ff6666;
+            font-family: monospace;
+            font-size: 14px;
+            padding: 10px;
+            display: none;
+            white-space: pre-wrap;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
     <div id="game-container"></div>
-    <script src="js/game.js"></script>
+    <div id="error-output"></div>
+    <script src="js/game.js?v=2"></script>
+    <script>
+        console.log('Page scripts:', Array.from(document.scripts).map(s => s.src));
+        const hasBoot = Array.from(document.scripts).some(s => (s.src || '').includes('game-boot.js'));
+        if (hasBoot) console.warn('Detected game-boot.js in the DOM (possibly cached).');
+    </script>
 </body>
 </html>

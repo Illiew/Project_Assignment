@@ -1,24 +1,3 @@
-// Game configuration
-const config = {
-    type: Phaser.AUTO,
-    width: 1000,
-    height: 700,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 0 },
-            debug: false
-        }
-    },
-    scene: [GameScene, ShopScene],
-    render: {
-        pixelArt: false,
-        antialias: true
-    }
-};
-
-const game = new Phaser.Game(config);
-
 // Game Scene - Main Cooking Game
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -34,6 +13,8 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
+        this.cameras.main.setBackgroundColor('#8B4513');
+        this.add.text(10, 10, 'GameScene: create()', { fontSize: '18px', fill: '#00FF00' }).setDepth(1000);
         this.createBackground();
         this.createUI();
         this.createGameElements();
@@ -392,6 +373,7 @@ class ShopScene extends Phaser.Scene {
         bgGfx.destroy();
         
         this.add.image(500, 350, 'shopBg');
+        this.add.text(10, 40, 'ShopScene: create()', { fontSize: '18px', fill: '#00FF00' }).setDepth(1000);
 
         // Title
         this.add.text(500, 50, '🛒 UPGRADE SHOP', {
@@ -495,4 +477,59 @@ class ShopScene extends Phaser.Scene {
             }
         });
     }
+}
+
+// Phaser boot (moved here to guarantee scenes are defined before boot)
+if (!window.__shawarma_game_booted) {
+    window.__shawarma_game_booted = true;
+
+    function showError(message) {
+        const errorDiv = document.getElementById('error-output');
+        if (errorDiv) {
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = message;
+        }
+    }
+
+    window.addEventListener('error', (event) => {
+        showError(`Error: ${event.message} at ${event.filename}:${event.lineno}:${event.colno}`);
+    });
+
+    window.addEventListener('load', () => {
+        if (typeof Phaser === 'undefined') {
+            showError('Phaser is not loaded. Check the CDN script or network connection.');
+            return;
+        }
+
+        if (typeof GameScene === 'undefined' || typeof ShopScene === 'undefined') {
+            showError('GameScene or ShopScene is not defined.');
+            return;
+        }
+
+        try {
+            const config = {
+                type: Phaser.AUTO,
+                parent: 'game-container',
+                width: 1000,
+                height: 700,
+                physics: {
+                    default: 'arcade',
+                    arcade: {
+                        gravity: { y: 0 },
+                        debug: false
+                    }
+                },
+                scene: [GameScene, ShopScene],
+                render: {
+                    pixelArt: false,
+                    antialias: true
+                }
+            };
+
+            new Phaser.Game(config);
+        } catch (error) {
+            console.error(error);
+            showError(error instanceof Error ? error.stack : String(error));
+        }
+    });
 }
