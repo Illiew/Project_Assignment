@@ -1,2 +1,8 @@
-# Project_Assignment
-CompSci Final Project Assingment 
+to start: 
+
+npm install
+
+npm start
+
+ open http://localhost:8000
+```

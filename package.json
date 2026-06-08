@@ -1,0 +1,16 @@
+{
+  "name": "shawarma-shop-game",
+  "version": "1.0.0",
+  "description": "2D Shawarma Cooking Shop Game - Cook, Upgrade, Earn!",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server -p 8000 -o",
+    "dev": "http-server -p 8000"
+  },
+  "keywords": ["game", "2d", "shawarma", "cooking", "phaser"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.0"
+  }
+}
